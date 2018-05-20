@@ -1,0 +1,15 @@
+type Team @model {
+  # Required system field
+  id: ID! @isUnique # read-only (managed by Graphcool)
+  name: String! 
+  players: [Player!]! @relation(name: "TeamPlayers")
+}
+
+type Player @model {
+  # Required system field
+  id: ID! @isUnique
+  name: String!
+  team: Team @relation(name: "TeamPlayers")
+}
+
+# PLAYGROUND : https://console.graph.cool/teams-db/playground
