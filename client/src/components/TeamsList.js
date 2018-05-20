@@ -72,7 +72,11 @@ class TeamsList extends Component {
                                 <i
                                   className="far fa-eye"
                                   onClick={() =>
-                                    this.setState({ isOpen: !this.state.isOpen, id: team.id, mode: 'read' })
+                                    this.setState({
+                                      isOpen: !this.state.isOpen,
+                                      id: team.id,
+                                      mode: 'read'
+                                    })
                                   }
                                 />
                                 <i
@@ -83,7 +87,11 @@ class TeamsList extends Component {
                                         accum[`p${index + 1}`] = player.name;
                                         return accum;
                                       },
-                                      { isOpen: !this.state.isOpen, id: team.id, mode: 'edit' }
+                                      {
+                                        isOpen: !this.state.isOpen,
+                                        id: team.id,
+                                        mode: 'edit'
+                                      }
                                     );
                                     this.setState(stateObj);
                                   }}
@@ -106,16 +114,14 @@ class TeamsList extends Component {
                           </ListGroupItem>
 
                           <Collapse
-                            isOpen={this.state.isOpen && this.state.mode === 'read' && this.state.id === team.id}
-                          >
+                            isOpen={this.state.isOpen && this.state.mode === 'read' && this.state.id === team.id}>
                             <ListGroup>
                               {team.players.map(player => <ListGroupItem key={player.id}>{player.name}</ListGroupItem>)}
                             </ListGroup>
                           </Collapse>
 
                           <Collapse
-                            isOpen={this.state.isOpen && this.state.mode === 'edit' && this.state.id === team.id}
-                          >
+                            isOpen={this.state.isOpen && this.state.mode === 'edit' && this.state.id === team.id}>
                             <ListGroup>
                               <div className="user-form-container">
                                 {team.players.map((player, index) => {
@@ -125,25 +131,39 @@ class TeamsList extends Component {
                                       type="text"
                                       placeholder="Player name"
                                       value={this.state[`p${index + 1}`]}
-                                      onChange={e => this.setState({ [`p${index + 1}`]: e.target.value })}
+                                      onChange={e =>
+                                        this.setState({
+                                          [`p${index + 1}`]: e.target.value
+                                        })
+                                      }
                                     />
                                   );
                                 })}
                               </div>
                               <Mutation mutation={UPDATE_TEAM}>
-                                  {updateTeam => (
-                                    <Button 
-                                      color="success"
-                                      onClick={() =>
-                                        updateTeam({
-                                          variables: { id: team.id, name: team.name, players: formatPlayers(this.state) },
-                                          refetchQueries: [{ query: REM_GET_TEAMS }]
-                                        }).then( result => this.setState({ isOpen: !this.state.isOpen }))
-                                          .catch( error => console.log('error'))
-                                      }
-                                    >Update Team</Button>
-                                  )}
-                                </Mutation>
+                                {updateTeam => (
+                                  <Button
+                                    color="success"
+                                    onClick={() =>
+                                      updateTeam({
+                                        variables: {
+                                          id: team.id,
+                                          name: team.name,
+                                          players: formatPlayers(this.state)
+                                        },
+                                        refetchQueries: [{ query: REM_GET_TEAMS }]
+                                      })
+                                        .then(result =>
+                                          this.setState({
+                                            isOpen: !this.state.isOpen
+                                          })
+                                        )
+                                        .catch(error => console.log('error'))
+                                    }>
+                                    Update Team
+                                  </Button>
+                                )}
+                              </Mutation>
                             </ListGroup>
                           </Collapse>
                         </div>
